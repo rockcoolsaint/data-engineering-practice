@@ -1,0 +1,21 @@
+SELECT count(*)
+FROM green_taxi_Data
+WHERE lpep_pickup_datetime::date = date '2021-01-15';
+
+
+SELECT lpep_pickup_datetime
+FROM green_taxi_data
+WHERE trip_distance = (SELECT MAX(trip_distance) FROM green_taxi_data);
+
+
+SELECT CONCAT('2:', count(passenger_count) FILTER (WHERE passenger_count = 2), '; ', '3:', count(passenger_count) FILTER (WHERE passenger_count = 3))
+FROM green_taxi_Data
+WHERE lpep_pickup_datetime::date = date '2019-01-01';
+
+SELECT "Zone", tip_amount
+FROM zones,
+green_taxi_data
+Where green_taxi_data."PULocationID" = (SELECT "LocationID" from zones WHERE "Zone" = 'Astoria') AND
+green_taxi_data.tip_amount = (
+	SELECT MAX(green_taxi_data.tip_amount) FROM green_taxi_data
+);
